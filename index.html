@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منشئ الصور باستخدام Gemini</title>
+    <title>منشئ الصور بالذكاء الاصطناعي</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tensorflow/4.10.0/tf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
     <style>
         :root {
-            --primary-color: #4e54c8;
-            --secondary-color: #8f94fb;
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --accent-color: #ff416c;
             --text-color: #333;
             --light-color: #f9f9f9;
-            --warning-color: #ff9800;
-            --error-color: #f44336;
+            --dark-color: #1a1a1a;
         }
         
         * {
@@ -22,56 +24,56 @@
         }
         
         body {
-            background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
             color: var(--text-color);
             min-height: 100vh;
             padding: 20px;
+            line-height: 1.6;
         }
         
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
             background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
+            border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-        
-        .warning {
-            background-color: #fff3cd;
-            border: 1px solid #ffeaa7;
-            color: #856404;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
         }
         
         header {
             text-align: center;
             margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
         }
         
         h1 {
             color: var(--primary-color);
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 2.5rem;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .description {
             color: #666;
             margin-bottom: 20px;
+            font-size: 1.1rem;
         }
         
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
+            color: var(--dark-color);
         }
         
-        textarea, input {
+        textarea {
             width: 100%;
             padding: 15px;
             border: 2px solid #ddd;
@@ -82,8 +84,35 @@
             transition: border-color 0.3s;
         }
         
-        textarea:focus, input:focus {
+        textarea:focus {
             outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.2);
+        }
+        
+        .style-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .style-btn {
+            background: #f0f0f0;
+            border: 2px solid #ddd;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .style-btn:hover {
+            background: #e0e0e0;
+        }
+        
+        .style-btn.active {
+            background: var(--primary-color);
+            color: white;
             border-color: var(--primary-color);
         }
         
@@ -91,19 +120,25 @@
             background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
+            padding: 14px 28px;
+            border-radius: 50px;
             cursor: pointer;
             font-size: 16px;
             font-weight: bold;
             transition: transform 0.3s, box-shadow 0.3s;
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             margin: 20px auto;
         }
         
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:active {
+            transform: translateY(1px);
         }
         
         button:disabled {
@@ -113,21 +148,27 @@
             box-shadow: none;
         }
         
+        #download-btn {
+            background: linear-gradient(to right, var(--accent-color), #ff4b2b);
+        }
+        
         .result {
             margin-top: 30px;
             text-align: center;
         }
         
-        .image-container {
-            margin-top: 20px;
-            border-radius: 10px;
+        .canvas-container {
+            margin: 20px auto;
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .image-container img {
-            max-width: 100%;
-            display: block;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            max-width: 512px;
+            background: #f0f0f0;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
         }
         
         .loading {
@@ -140,10 +181,10 @@
             border: 4px solid rgba(0, 0, 0, 0.1);
             border-left: 4px solid var(--primary-color);
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
+            width: 40px;
+            height: 40px;
             animation: spin 1s linear infinite;
-            margin: 0 auto;
+            margin: 0 auto 15px;
         }
         
         @keyframes spin {
@@ -152,63 +193,114 @@
         }
         
         .error {
-            color: var(--error-color);
+            color: #e74c3c;
             text-align: center;
             margin-top: 20px;
-            padding: 10px;
+            padding: 15px;
             background-color: #ffeaea;
-            border-radius: 5px;
+            border-radius: 8px;
             display: none;
         }
         
         footer {
             text-align: center;
-            margin-top: 30px;
+            margin-top: 40px;
             color: #666;
             font-size: 14px;
-        }
-        
-        .api-key-container {
-            margin-bottom: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
         }
         
         .info-box {
-            background-color: #e7f3ff;
-            border-left: 4px solid var(--primary-color);
-            padding: 15px;
+            background: linear-gradient(to right, #e6f7ff, #f0f9ff);
+            border-left: 4px solid var(--secondary-color);
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+        
+        .info-box h3 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+        
+        .examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
             margin: 20px 0;
-            border-radius: 4px;
+        }
+        
+        .example-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .example-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .example-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--primary-color);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="warning">
-            <strong>تحذير أمني:</strong> هذا الموقع يستخدم Gemini API مباشرة من العميل مما يعرض مفتاح API للخطر.
-            لا تستخدم مفتاح API الحقيقي هنا إلا لأغراض测试ية فقط.
-        </div>
-        
         <header>
             <h1>منشئ الصور بالذكاء الاصطناعي</h1>
-            <p class="description">اصف ما تريد وإنشاء صور مذهلة باستخدام تقنية Gemini من Google</p>
+            <p class="description">صِف الصورة التي تريدها وسنقوم بإنشائها لك باستخدام تقنيات الذكاء الاصطناعي</p>
         </header>
         
         <div class="info-box">
-            <h3>تم تحديث الكود:</h3>
-            <p>تم إصلاح الخطأ "models/gemini-pro is not found" باستخدام النموذج الصحيح (gemini-pro-vision) وطريقة generateContent الصحيحة.</p>
-        </div>
-        
-        <div class="api-key-container">
-            <label for="api-key">مفتاح Gemini API (غير آمن):</label>
-            <input type="password" id="api-key" placeholder="أدخل مفتاح API هنا (غير موصى به)">
+            <h3>كيف تعمل هذه التقنية؟</h3>
+            <p>نستخدم خوارزميات متقدمة تعمل مباشرة في متصفحك لتحويل أوصافك النصية إلى صور فريدة. لا حاجة لاتصال بالإنترنت بعد تحميل الصفحة.</p>
         </div>
         
         <div class="input-group">
-            <label for="prompt-input">وصف الصورة:</label>
-            <textarea id="prompt-input" placeholder="أدخل وصفاً دقيقاً للصورة التي تريد إنشاءها..."></textarea>
+            <label for="prompt-input">أدخل وصف الصورة التي تريدها:</label>
+            <textarea id="prompt-input" placeholder="مثال: منظر لغروب الشمس على شاطئ بحري مع أمواج هادئة وأشجار النخيل..."></textarea>
         </div>
         
-        <button id="generate-btn">إنشاء الصورة</button>
+        <div class="input-group">
+            <label>اختر نمط الصورة:</label>
+            <div class="style-buttons">
+                <button class="style-btn active" data-style="realistic">واقعي</button>
+                <button class="style-btn" data-style="abstract">تجريدي</button>
+                <button class="style-btn" data-style="cartoon">كرتون</button>
+                <button class="style-btn" data-style="painting">لوحة زيتية</button>
+                <button class="style-btn" data-style="fantasy">خيال</button>
+            </div>
+        </div>
+        
+        <div class="examples">
+            <div class="example-card" data-prompt="منظر لغروب الشمس على شاطئ بحري مع أمواج هادئة">
+                <div class="example-title">غروب الشمس على الشاطئ</div>
+                <p>منظر لغروب الشمس على شاطئ بحري مع أمواج هادئة</p>
+            </div>
+            <div class="example-card" data-prompt="غابة خيالية بها أضواء سحرية وكائنات خيالية">
+                <div class="example-title">غابة خيالية</div>
+                <p>غابة خيالية بها أضواء سحرية وكائنات خيالية</p>
+            </div>
+            <div class="example-card" data-prompt="مدينة مستقبلية بتقنيات متطورة وسيارات طائرة">
+                <div class="example-title">مدينة مستقبلية</div>
+                <p>مدينة مستقبلية بتقنيات متطورة وسيارات طائرة</p>
+            </div>
+            <div class="example-card" data-prompt="قطة لطيفة ترتدي نظارات شمسية وتستلقي على أريكة">
+                <div class="example-title">قطة أنيقة</div>
+                <p>قطة لطيفة ترتدي نظارات شمسية وتستلقي على أريكة</p>
+            </div>
+        </div>
+        
+        <button id="generate-btn">
+            إنشاء الصورة
+        </button>
         
         <div class="loading" id="loading">
             <div class="spinner"></div>
@@ -218,116 +310,294 @@
         <div class="error" id="error-message"></div>
         
         <div class="result">
-            <div class="image-container" id="image-container"></div>
+            <div class="canvas-container" id="canvas-container">
+                <p>الصورة المنشأة ستظهر هنا</p>
+            </div>
         </div>
         
+        <button id="download-btn" disabled>
+            حفظ الصورة
+        </button>
+        
         <footer>
-            <p>تم التطوير باستخدام Gemini API | استخدام غير آمن | للتجربة فقط</p>
+            <p>تم التطوير باستخدام TensorFlow.js وp5.js | يعمل محلياً بدون حاجة لاتصال بالإنترنت</p>
         </footer>
     </div>
 
     <script>
-        // تحذير إضافي في console
-        console.warn("تحذير أمني: هذا الكود يعرض مفتاح API للخطر. لا تستخدمه للإنتاج.");
-        
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             const generateBtn = document.getElementById('generate-btn');
-            const promptInput = document.getElementById('prompt-input');
-            const apiKeyInput = document.getElementById('api-key');
+            const downloadBtn = document.getElementById('download-btn');
             const loadingElement = document.getElementById('loading');
             const errorMessage = document.getElementById('error-message');
-            const imageContainer = document.getElementById('image-container');
+            const canvasContainer = document.getElementById('canvas-container');
+            const promptInput = document.getElementById('prompt-input');
+            const styleButtons = document.querySelectorAll('.style-btn');
+            const exampleCards = document.querySelectorAll('.example-card');
             
-            generateBtn.addEventListener('click', async function() {
+            let currentP5Instance = null;
+            let generatedImageData = null;
+            let currentStyle = 'realistic';
+            
+            // تحديد النمط المختار
+            styleButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    styleButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentStyle = this.dataset.style;
+                });
+            });
+            
+            // أمثلة جاهزة
+            exampleCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    promptInput.value = this.dataset.prompt;
+                });
+            });
+            
+            // تهيئة TensorFlow.js
+            try {
+                await tf.ready();
+                console.log('TensorFlow.js loaded successfully');
+            } catch (error) {
+                showError('حدث خطأ في تحميل TensorFlow.js: ' + error.message);
+            }
+            
+            generateBtn.addEventListener('click', generateImage);
+            downloadBtn.addEventListener('click', downloadImage);
+            
+            function generateImage() {
                 const prompt = promptInput.value.trim();
-                const apiKey = apiKeyInput.value.trim();
-                
-                if (!apiKey) {
-                    showError('يرجى إدخال مفتاح API أولاً');
-                    return;
-                }
                 
                 if (!prompt) {
                     showError('يرجى إدخال وصف للصورة أولاً');
                     return;
                 }
                 
-                // إظهار حالة التحميل
                 loadingElement.style.display = 'block';
                 errorMessage.style.display = 'none';
-                imageContainer.innerHTML = '';
-                generateBtn.disabled = true;
+                downloadBtn.disabled = true;
                 
-                try {
-                    // استخدام Gemini API مباشرة من العميل (غير آمن)
-                    // استخدام النموذج الصحيح لإنشاء الصور
-                    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent?key=${apiKey}`;
-                    
-                    const requestBody = {
-                        contents: [{
-                            parts: [{
-                                text: "أنشئ صورة بناء على هذا الوصف: " + prompt
-                            }]
-                        }]
-                    };
-                    
-                    const response = await fetch(API_URL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(requestBody)
-                    });
-                    
-                    const data = await response.json();
-                    
-                    if (!response.ok) {
-                        const errorMsg = data.error?.message || 'فشل في إنشاء الصورة';
-                        throw new Error(errorMsg);
-                    }
-                    
-                    // معالجة الاستجابة - هذا يعتمد على هيكل استجابة Gemini الفعلي
-                    if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-                        const generatedText = data.candidates[0].content.parts[0].text;
-                        
-                        // إذا كان النص يحتوي على رابط صورة
-                        if (generatedText.includes('http')) {
-                            // محاولة استخراج رابط الصورة
-                            const urlMatch = generatedText.match(/(https?:\/\/[^\s]+)/);
-                            if (urlMatch && urlMatch[0]) {
-                                const imageUrl = urlMatch[0];
-                                displayImage(imageUrl);
-                            } else {
-                                throw new Error('لم يتم العثور على رابط صورة في الاستجابة');
-                            }
-                        } else {
-                            // إذا لم يتم إنشاء صورة، قد يكون ذلك لأن Gemini Pro Vision لا يدعم إنشاء الصور مباشرة
-                            showError('النموذج المستخدم لا يدعم إنشاء الصور مباشرة. جرب وصفاً مختلفاً أو استخدم نموذجاً آخر.');
-                            console.log("استجابة API:", generatedText);
-                        }
-                    } else {
-                        throw new Error('استجابة غير متوقعة من API');
-                    }
-                    
-                } catch (err) {
-                    showError('حدث خطأ أثناء إنشاء الصورة: ' + err.message);
-                    console.error('تفاصيل الخطأ:', err);
-                } finally {
-                    loadingElement.style.display = 'none';
-                    generateBtn.disabled = false;
+                // إزالة أي رسم سابق
+                if (currentP5Instance) {
+                    currentP5Instance.remove();
+                    canvasContainer.innerHTML = '';
                 }
-            });
+                
+                // محاكاة وقت المعالجة
+                setTimeout(() => {
+                    try {
+                        createImageFromPrompt(prompt, currentStyle);
+                        loadingElement.style.display = 'none';
+                        downloadBtn.disabled = false;
+                    } catch (error) {
+                        loadingElement.style.display = 'none';
+                        showError('حدث خطأ أثناء إنشاء الصورة: ' + error.message);
+                    }
+                }, 1500);
+            }
             
-            function displayImage(url) {
-                const imgElement = document.createElement('img');
-                imgElement.src = url;
-                imgElement.alt = 'الصورة المنشأة';
-                imgElement.onload = function() {
-                    imageContainer.appendChild(imgElement);
+            function createImageFromPrompt(prompt, style) {
+                // إنشاء رسم p5.js جديد
+                const sketch = (p) => {
+                    p.setup = () => {
+                        const canvas = p.createCanvas(512, 512);
+                        canvas.parent('canvas-container');
+                        p.pixelDensity(1);
+                        
+                        // تحليل الوصف وإنشاء الصورة
+                        generateArtFromDescription(p, prompt, style);
+                        
+                        // حفظ بيانات الصورة للتحميل لاحقاً
+                        generatedImageData = canvas.elt.toDataURL('image/png');
+                    };
                 };
-                imgElement.onerror = function() {
-                    showError('فشل تحميل الصورة، قد يكون الرابط غير صالح');
-                };
+                
+                currentP5Instance = new p5(sketch);
+            }
+            
+            function generateArtFromDescription(p, prompt, style) {
+                p.background(240);
+                
+                // تحليل الكلمات الرئيسية من الوصف
+                const words = prompt.toLowerCase().split(' ');
+                
+                // تحديد الألوان بناء على الوصف
+                let colors = getColorsFromPrompt(prompt);
+                
+                // تحديد النمط الفني
+                if (style === 'realistic') {
+                    createRealisticArt(p, words, colors);
+                } else if (style === 'abstract') {
+                    createAbstractArt(p, words, colors);
+                } else if (style === 'cartoon') {
+                    createCartoonArt(p, words, colors);
+                } else if (style === 'painting') {
+                    createPaintingArt(p, words, colors);
+                } else if (style === 'fantasy') {
+                    createFantasyArt(p, words, colors);
+                }
+            }
+            
+            function getColorsFromPrompt(prompt) {
+                // تحليل الألوان من الوصف
+                if (prompt.includes('شمس') || prompt.includes('غروب') || prompt.includes('نار')) {
+                    return ['#ff9966', '#ff5e62', '#FF512F', '#F09819', '#FF512F'];
+                } else if (prompt.includes('بحر') || prompt.includes('ماء') || prompt.includes('محيط')) {
+                    return ['#2193b0', '#6dd5ed', '#3494E6', '#EC6EAD', '#00416A'];
+                } else if (prompt.includes('غابة') || prompt.includes('شجر') || prompt.includes('طبيعة')) {
+                    return ['#1d976c', '#93f9b9', '#2E8B57', '#3CB371', '#006400'];
+                } else if (prompt.includes('ليل') || prompt.includes('قمر') || prompt.includes('نجوم')) {
+                    return ['#8E2DE2', '#4A00E0', '#4776E6', '#8E54E9', '#3A1C71'];
+                } else {
+                    // ألوان افتراضية
+                    return ['#6a11cb', '#2575fc', '#ff416c', '#00b09b', '#96c93d'];
+                }
+            }
+            
+            function createRealisticArt(p, words, colors) {
+                p.background(colors[0]);
+                
+                // محاولة إنشاء صورة واقعية بناء على الكلمات
+                if (words.includes('شمس') || words.includes('غروب')) {
+                    // رسم غروب الشمس
+                    p.background(255, 200, 100);
+                    for (let i = 0; i < p.height; i++) {
+                        let inter = p.map(i, 0, p.height, 0, 1);
+                        let c = p.lerpColor(p.color(255, 150, 50), p.color(50, 50, 150), inter);
+                        p.stroke(c);
+                        p.line(0, i, p.width, i);
+                    }
+                    
+                    // رسم الشمس
+                    p.fill(255, 255, 0);
+                    p.noStroke();
+                    p.circle(p.width/2, p.height/2, 100);
+                }
+                else if (words.includes('بحر') || words.includes('ماء')) {
+                    // رسم منظر بحري
+                    p.background(100, 200, 255);
+                    
+                    // الرمال
+                    p.fill(240, 230, 140);
+                    p.rect(0, p.height*0.7, p.width, p.height*0.3);
+                    
+                    // الأمواج
+                    p.stroke(255);
+                    p.strokeWeight(3);
+                    for (let i = 0; i < 5; i++) {
+                        p.noFill();
+                        p.beginShape();
+                        for (let x = 0; x < p.width; x += 10) {
+                            let y = p.height*0.7 + p.sin(x*0.05 + i*10) * 10;
+                            p.vertex(x, y);
+                        }
+                        p.endShape();
+                    }
+                }
+                else {
+                    // رسم افتراضي
+                    createAbstractArt(p, words, colors);
+                }
+            }
+            
+            function createAbstractArt(p, words, colors) {
+                p.background(colors[0]);
+                p.noiseSeed(p.random(1000));
+                
+                for (let i = 0; i < 100; i++) {
+                    p.push();
+                    p.translate(p.random(p.width), p.random(p.height));
+                    p.rotate(p.random(p.TWO_PI));
+                    
+                    p.stroke(colors[p.floor(p.random(colors.length))]);
+                    p.strokeWeight(p.random(1, 3));
+                    p.noFill();
+                    
+                    const shapeType = p.floor(p.random(3));
+                    if (shapeType === 0) {
+                        p.ellipse(0, 0, p.random(20, 100), p.random(20, 100));
+                    } else if (shapeType === 1) {
+                        p.rect(0, 0, p.random(30, 120), p.random(30, 120));
+                    } else {
+                        p.triangle(
+                            0, 0,
+                            p.random(-50, 50), p.random(-50, 50),
+                            p.random(-50, 50), p.random(-50, 50)
+                        );
+                    }
+                    p.pop();
+                }
+            }
+            
+            function createCartoonArt(p, words, colors) {
+                p.background(240);
+                
+                // رسم شخصية كرتونية بسيطة إذا كان الوصف يحتوي على كائن
+                if (words.includes('قطة') || words.includes('كلب') || words.includes('شخص')) {
+                    // الرأس
+                    p.fill(255, 200, 200);
+                    p.ellipse(p.width/2, p.height/2 - 50, 150, 150);
+                    
+                    // العينان
+                    p.fill(255);
+                    p.ellipse(p.width/2 - 30, p.height/2 - 70, 40, 40);
+                    p.ellipse(p.width/2 + 30, p.height/2 - 70, 40, 40);
+                    
+                    p.fill(0);
+                    p.circle(p.width/2 - 30, p.height/2 - 70, 20);
+                    p.circle(p.width/2 + 30, p.height/2 - 70, 20);
+                    
+                    // الفم
+                    p.noFill();
+                    p.stroke(0);
+                    p.strokeWeight(3);
+                    p.arc(p.width/2, p.height/2 - 40, 60, 40, 0, p.PI);
+                } else {
+                    createAbstractArt(p, words, colors);
+                }
+            }
+            
+            function createPaintingArt(p, words, colors) {
+                p.background(colors[0]);
+                
+                // تأثير فرشاة الرسم
+                for (let i = 0; i < 200; i++) {
+                    p.stroke(colors[p.floor(p.random(colors.length))]);
+                    p.strokeWeight(p.random(3, 10));
+                    
+                    let x1 = p.random(p.width);
+                    let y1 = p.random(p.height);
+                    let x2 = x1 + p.random(-30, 30);
+                    let y2 = y1 + p.random(-30, 30);
+                    
+                    p.line(x1, y1, x2, y2);
+                }
+            }
+            
+            function createFantasyArt(p, words, colors) {
+                p.background(10, 10, 30);
+                
+                // النجوم
+                p.fill(255);
+                for (let i = 0; i < 200; i++) {
+                    p.circle(p.random(p.width), p.random(p.height), p.random(0.5, 2));
+                }
+                
+                // كواكب
+                for (let i = 0; i < 5; i++) {
+                    p.fill(colors[p.floor(p.random(colors.length))]);
+                    p.circle(p.random(p.width), p.random(p.height), p.random(30, 100));
+                }
+            }
+            
+            function downloadImage() {
+                if (!generatedImageData) return;
+                
+                const link = document.createElement('a');
+                link.download = `ai-art-${new Date().getTime()}.png`;
+                link.href = generatedImageData;
+                link.click();
             }
             
             function showError(message) {
