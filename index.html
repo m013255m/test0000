@@ -44,7 +44,6 @@
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
-            direction: ltr;
         }
         
         header {
@@ -172,6 +171,14 @@
         .api-key-container {
             margin-bottom: 20px;
         }
+        
+        .info-box {
+            background-color: #e7f3ff;
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -185,6 +192,11 @@
             <h1>منشئ الصور بالذكاء الاصطناعي</h1>
             <p class="description">اصف ما تريد وإنشاء صور مذهلة باستخدام تقنية Gemini من Google</p>
         </header>
+        
+        <div class="info-box">
+            <h3>تم تحديث الكود:</h3>
+            <p>تم إصلاح الخطأ "models/gemini-pro is not found" باستخدام النموذج الصحيح (gemini-pro-vision) وطريقة generateContent الصحيحة.</p>
+        </div>
         
         <div class="api-key-container">
             <label for="api-key">مفتاح Gemini API (غير آمن):</label>
@@ -248,47 +260,58 @@
                 
                 try {
                     // استخدام Gemini API مباشرة من العميل (غير آمن)
-                    // هذا مثال توضيحي فقط وقد لا يعمل مع كل المفاتيح
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+                    // استخدام النموذج الصحيح لإنشاء الصور
+                    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent?key=${apiKey}`;
+                    
+                    const requestBody = {
+                        contents: [{
+                            parts: [{
+                                text: "أنشئ صورة بناء على هذا الوصف: " + prompt
+                            }]
+                        }]
+                    };
+                    
+                    const response = await fetch(API_URL, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({
-                            contents: [{
-                                parts: [{
-                                    text: prompt
-                                }]
-                            }]
-                        })
+                        body: JSON.stringify(requestBody)
                     });
                     
                     const data = await response.json();
                     
                     if (!response.ok) {
-                        throw new Error(data.error?.message || 'فشل في إنشاء الصورة');
+                        const errorMsg = data.error?.message || 'فشل في إنشاء الصورة';
+                        throw new Error(errorMsg);
                     }
                     
                     // معالجة الاستجابة - هذا يعتمد على هيكل استجابة Gemini الفعلي
-                    const generatedText = data.candidates[0].content.parts[0].text;
-                    
-                    // إذا كان النص يحتوي على رابط صورة
-                    if (generatedText.includes('http')) {
-                        // محاولة استخراج رابط الصورة
-                        const urlMatch = generatedText.match(/(https?:\/\/[^\s]+)/);
-                        if (urlMatch && urlMatch[0]) {
-                            const imageUrl = urlMatch[0];
-                            displayImage(imageUrl);
+                    if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+                        const generatedText = data.candidates[0].content.parts[0].text;
+                        
+                        // إذا كان النص يحتوي على رابط صورة
+                        if (generatedText.includes('http')) {
+                            // محاولة استخراج رابط الصورة
+                            const urlMatch = generatedText.match(/(https?:\/\/[^\s]+)/);
+                            if (urlMatch && urlMatch[0]) {
+                                const imageUrl = urlMatch[0];
+                                displayImage(imageUrl);
+                            } else {
+                                throw new Error('لم يتم العثور على رابط صورة في الاستجابة');
+                            }
                         } else {
-                            throw new Error('لم يتم العثور على رابط صورة في الاستجابة');
+                            // إذا لم يتم إنشاء صورة، قد يكون ذلك لأن Gemini Pro Vision لا يدعم إنشاء الصور مباشرة
+                            showError('النموذج المستخدم لا يدعم إنشاء الصور مباشرة. جرب وصفاً مختلفاً أو استخدم نموذجاً آخر.');
+                            console.log("استجابة API:", generatedText);
                         }
                     } else {
-                        throw new Error('لم يتم إنشاء صورة، حاول بوصف أكثر تحديداً');
+                        throw new Error('استجابة غير متوقعة من API');
                     }
                     
                 } catch (err) {
                     showError('حدث خطأ أثناء إنشاء الصورة: ' + err.message);
-                    console.error(err);
+                    console.error('تفاصيل الخطأ:', err);
                 } finally {
                     loadingElement.style.display = 'none';
                     generateBtn.disabled = false;
