@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>طلب شراء المنتج</title>
+    <title>طلب شراء - Easy Order</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #4a6cf7;
-            --secondary-color: #6b7cff;
-            --text-color: #333;
-            --light-gray: #f5f5f5;
-            --border-color: #ddd;
-            --success-color: #28a745;
+            --primary: #FF6B6B;
+            --secondary: #4ECDC4;
+            --dark: #292F36;
+            --light: #F7FFF7;
+            --accent: #FFE66D;
         }
         
         * {
@@ -22,58 +22,71 @@
         }
         
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: var(--text-color);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: var(--dark);
             line-height: 1.6;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             padding: 20px;
         }
         
         .container {
             max-width: 1200px;
-            width: 100%;
+            margin: 0 auto;
         }
         
-        .landing-page {
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .cart-icon {
+            position: relative;
+            font-size: 24px;
+            color: var(--dark);
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        
+        .product-container {
             display: flex;
             flex-wrap: wrap;
             background: white;
             border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-        }
-        
-        .product-info {
-            flex: 1;
-            min-width: 300px;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
         }
         
         .product-image {
             flex: 1;
             min-width: 300px;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 40px;
             position: relative;
-            overflow: hidden;
-        }
-        
-        .product-image::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: rgba(255, 255, 255, 0.1);
-            transform: rotate(45deg);
         }
         
         .product-image img {
@@ -81,122 +94,177 @@
             max-height: 450px;
             border-radius: 10px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            position: relative;
-            z-index: 1;
         }
         
-        h1 {
-            font-size: 2.2rem;
-            margin-bottom: 15px;
-            color: var(--primary-color);
+        .product-details {
+            flex: 1;
+            min-width: 300px;
+            padding: 40px;
         }
         
-        .description {
-            margin-bottom: 25px;
+        .product-title {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .product-price {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .product-description {
             color: #666;
-            font-size: 1.1rem;
-        }
-        
-        .price {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--primary-color);
             margin-bottom: 30px;
+            line-height: 1.8;
         }
         
-        .features {
-            margin-bottom: 30px;
+        .option-section {
+            margin-bottom: 25px;
         }
         
-        .features ul {
-            list-style: none;
+        .option-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
         }
         
-        .features li {
-            padding: 8px 0;
-            position: relative;
-            padding-right: 25px;
+        .option-title i {
+            margin-left: 8px;
+            color: var(--primary);
         }
         
-        .features li::before {
-            content: '✓';
-            position: absolute;
-            right: 0;
-            color: var(--success-color);
-            font-weight: bold;
+        .options-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .option {
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .option:hover {
+            border-color: var(--primary);
+        }
+        
+        .option.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
         }
         
         .form-group {
             margin-bottom: 20px;
         }
         
-        label {
+        .form-group label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
         }
         
-        input, select {
+        .form-control {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 1rem;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
             transition: all 0.3s;
         }
         
-        input:focus, select:focus {
+        .form-control:focus {
             outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
         }
         
         .optional {
             color: #888;
-            font-size: 0.9rem;
+            font-size: 14px;
         }
         
-        .btn {
+        .order-btn {
             display: block;
             width: 100%;
-            padding: 15px;
-            background: var(--primary-color);
+            padding: 16px;
+            background: var(--primary);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
+            border-radius: 10px;
+            font-size: 18px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            margin-top: 10px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         
-        .btn:hover {
-            background: var(--secondary-color);
+        .order-btn:hover {
+            background: #ff5252;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
         }
         
-        .btn:active {
+        .order-btn:active {
             transform: translateY(0);
         }
         
         .success-message {
             display: none;
-            background: var(--success-color);
+            background: var(--secondary);
             color: white;
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 10px;
             text-align: center;
             margin-top: 20px;
         }
         
+        .selected-items {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-right: 4px solid var(--primary);
+        }
+        
+        .selected-items h4 {
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .selected-items-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .selected-item {
+            background: var(--primary);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
         @media (max-width: 768px) {
-            .landing-page {
+            .product-container {
                 flex-direction: column-reverse;
             }
             
-            .product-image, .product-info {
+            .product-image, .product-details {
                 padding: 25px;
             }
         }
@@ -204,62 +272,79 @@
 </head>
 <body>
     <div class="container">
-        <div class="landing-page">
-            <div class="product-info">
-                <h1>سماعات الرأس المميزة</h1>
-                <p class="description">استمتع بتجربة صوتية استثنائية مع سماعاتنا المميزة. جودة صوت عالية، تصميم مريح، وعزل ضوائي متقدم.</p>
+        <header>
+            <div class="logo">EasyOrder</div>
+            <div class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+            </div>
+        </header>
+        
+        <div class="product-container">
+            <div class="product-details">
+                <h1 class="product-title">تيشيرت رياضي متميز</h1>
+                <div class="product-price">السعر: 199 جنيه</div>
                 
-                <div class="price">السعر: 599 جنيه</div>
+                <p class="product-description">
+                    تيشيرت رياضي عالي الجودة، مصنوع من قماش قطني ناعم ومريح للتنفس. مثالي للتمارين الرياضية والاستخدام اليومي.
+                </p>
                 
-                <div class="features">
-                    <h3>المميزات:</h3>
-                    <ul>
-                        <li>جودة صوت عالية الدقة</li>
-                        <li>عزل ضوائي متقدم</li>
-                        <li>بطارية تعمل حتى 30 ساعة</li>
-                        <li>شحن سريع خلال ساعتين</li>
-                        <li>تصميم مريح للاستخدام الطويل</li>
-                    </ul>
+                <div class="selected-items" id="selected-items">
+                    <h4>الاختيارات المحددة:</h4>
+                    <div class="selected-items-list" id="selected-items-list">
+                        <!-- سيتم عرض العناصر المختارة هنا -->
+                    </div>
                 </div>
                 
                 <form id="order-form">
-                    <div class="form-group">
-                        <label for="size">المقاس:</label>
-                        <select id="size" required>
-                            <option value="">اختر المقاس</option>
-                            <option value="صغير">صغير</option>
-                            <option value="متوسط">متوسط</option>
-                            <option value="كبير">كبير</option>
-                        </select>
+                    <div class="option-section">
+                        <div class="option-title">
+                            <i class="fas fa-ruler"></i>
+                            <span>اختر المقاس (يمكن اختيار أكثر من مقاس)</span>
+                        </div>
+                        <div class="options-container" id="sizes-container">
+                            <div class="option" data-value="صغير">صغير (S)</div>
+                            <div class="option" data-value="متوسط">متوسط (M)</div>
+                            <div class="option" data-value="كبير">كبير (L)</div>
+                            <div class="option" data-value="اكبر كبير">أكبر كبير (XL)</div>
+                            <div class="option" data-value="اكبر كبير جداً">أكبر كبير جداً (XXL)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="option-section">
+                        <div class="option-title">
+                            <i class="fas fa-palette"></i>
+                            <span>اختر اللون (يمكن اختيار أكثر من لون)</span>
+                        </div>
+                        <div class="options-container" id="colors-container">
+                            <div class="option" data-value="أسود">أسود</div>
+                            <div class="option" data-value="أبيض">أبيض</div>
+                            <div class="option" data-value="أحمر">أحمر</div>
+                            <div class="option" data-value="أزرق">أزرمي</div>
+                            <div class="option" data-value="أخضر">أخضر</div>
+                            <div class="option" data-value="رمادي">رمادي</div>
+                        </div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="color">اللون:</label>
-                        <select id="color" required>
-                            <option value="">اختر اللون</option>
-                            <option value="أسود">أسود</option>
-                            <option value="أبيض">أبيض</option>
-                            <option value="أزرق">أزرق</option>
-                            <option value="أحمر">أحمر</option>
-                        </select>
+                        <label for="phone">رقم الهاتف <span class="optional">(مطلوب)</span></label>
+                        <input type="tel" id="phone" class="form-control" required placeholder="أدخل رقم هاتفك">
                     </div>
                     
                     <div class="form-group">
-                        <label for="phone">رقم الهاتف <span class="optional">(مطلوب)</span>:</label>
-                        <input type="tel" id="phone" required placeholder="أدخل رقم هاتفك">
+                        <label for="phone2">رقم هاتف إضافي <span class="optional">(اختياري)</span></label>
+                        <input type="tel" id="phone2" class="form-control" placeholder="رقم هاتف إضافي (اختياري)">
                     </div>
                     
                     <div class="form-group">
-                        <label for="phone2">رقم هاتف إضافي <span class="optional">(اختياري)</span>:</label>
-                        <input type="tel" id="phone2" placeholder="رقم هاتف إضافي (اختياري)">
+                        <label for="address">العنوان بالكامل</label>
+                        <input type="text" id="address" class="form-control" required placeholder="أدخل عنوانك بالكامل">
                     </div>
                     
-                    <div class="form-group">
-                        <label for="address">العنوان بالكامل:</label>
-                        <input type="text" id="address" required placeholder="أدخل عنوانك بالكامل">
-                    </div>
-                    
-                    <button type="submit" class="btn">طلب الشراء</button>
+                    <button type="submit" class="order-btn">
+                        <i class="fab fa-whatsapp"></i>
+                        طلب الشراء عبر واتساب
+                    </button>
                     
                     <div class="success-message" id="success-message">
                         جاري فتح واتساب لإرسال طلبك...
@@ -268,50 +353,167 @@
             </div>
             
             <div class="product-image">
-                <img src="https://cdn.pixabay.com/photo/2016/11/29/05/07/headphones-1867430_1280.jpg" alt="سماعات الرأس المميزة">
+                <img src="https://cdn.pixabay.com/photo/2016/12/06/09/31/blank-1886008_1280.png" alt="تيشيرت رياضي">
             </div>
         </div>
     </div>
 
     <script>
+        // مصفوفات لتخزين الاختيارات
+        let selectedSizes = [];
+        let selectedColors = [];
+        
+        // تحديد العناصر
+        const sizesContainer = document.getElementById('sizes-container');
+        const colorsContainer = document.getElementById('colors-container');
+        const selectedItemsList = document.getElementById('selected-items-list');
+        const selectedItemsSection = document.getElementById('selected-items');
+        const cartCount = document.querySelector('.cart-count');
+        
+        // إضافة حدث النقر لخيارات المقاسات
+        sizesContainer.addEventListener('click', function(e) {
+            if (e.target.classList.contains('option')) {
+                const size = e.target.getAttribute('data-value');
+                
+                if (e.target.classList.contains('selected')) {
+                    // إزالة التحديد
+                    e.target.classList.remove('selected');
+                    selectedSizes = selectedSizes.filter(s => s !== size);
+                } else {
+                    // إضافة التحديد
+                    e.target.classList.add('selected');
+                    selectedSizes.push(size);
+                }
+                
+                updateSelectedItems();
+            }
+        });
+        
+        // إضافة حدث النقر لخيارات الألوان
+        colorsContainer.addEventListener('click', function(e) {
+            if (e.target.classList.contains('option')) {
+                const color = e.target.getAttribute('data-value');
+                
+                if (e.target.classList.contains('selected')) {
+                    // إزالة التحديد
+                    e.target.classList.remove('selected');
+                    selectedColors = selectedColors.filter(c => c !== color);
+                } else {
+                    // إضافة التحديد
+                    e.target.classList.add('selected');
+                    selectedColors.push(color);
+                }
+                
+                updateSelectedItems();
+            }
+        });
+        
+        // تحديث العناصر المختارة وعرضها
+        function updateSelectedItems() {
+            selectedItemsList.innerHTML = '';
+            
+            // إضافة المقاسات المختارة
+            selectedSizes.forEach(size => {
+                const item = document.createElement('div');
+                item.className = 'selected-item';
+                item.textContent = `المقاس: ${size}`;
+                selectedItemsList.appendChild(item);
+            });
+            
+            // إضافة الألوان المختارة
+            selectedColors.forEach(color => {
+                const item = document.createElement('div');
+                item.className = 'selected-item';
+                item.style.background = getColorCode(color);
+                item.textContent = `اللون: ${color}`;
+                selectedItemsList.appendChild(item);
+            });
+            
+            // إظهار أو إخفاء قسم العناصر المختارة
+            if (selectedSizes.length > 0 || selectedColors.length > 0) {
+                selectedItemsSection.style.display = 'block';
+                cartCount.textContent = selectedSizes.length + selectedColors.length;
+            } else {
+                selectedItemsSection.style.display = 'none';
+                cartCount.textContent = '0';
+            }
+        }
+        
+        // الحصول على كود اللون لعرضه
+        function getColorCode(color) {
+            const colorMap = {
+                'أسود': '#000000',
+                'أبيض': '#FFFFFF',
+                'أحمر': '#FF0000',
+                'أزرمي': '#1E90FF',
+                'أخضر': '#008000',
+                'رمادي': '#808080'
+            };
+            
+            return colorMap[color] || '#FF6B6B';
+        }
+        
+        // إرسال الطلب عبر واتساب
         document.getElementById('order-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
+            // التحقق من اختيار مقاس واحد على الأقل
+            if (selectedSizes.length === 0) {
+                alert('يرجى اختيار مقاس واحد على الأقل');
+                return;
+            }
+            
+            // التحقق من اختيار لون واحد على الأقل
+            if (selectedColors.length === 0) {
+                alert('يرجى اختيار لون واحد على الأقل');
+                return;
+            }
+            
             // جمع البيانات من النموذج
-            const size = document.getElementById('size').value;
-            const color = document.getElementById('color').value;
             const phone = document.getElementById('phone').value;
             const phone2 = document.getElementById('phone2').value;
             const address = document.getElementById('address').value;
             
             // إنشاء نص الرسالة
             let message = `طلب شراء جديد:%0A%0A`;
-            message += `المنتج: سماعات الرأس المميزة%0A`;
-            message += `المقاس: ${size}%0A`;
-            message += `اللون: ${color}%0A`;
-            message += `رقم الهاتف: ${phone}%0A`;
+            message += `المنتج: تيشيرت رياضي متميز%0A`;
+            message += `السعر: 199 جنيه%0A%0A`;
+            
+            message += `المقاسات المطلوبة:%0A`;
+            selectedSizes.forEach(size => {
+                message += `- ${size}%0A`;
+            });
+            
+            message += `%0Aالألوان المطلوبة:%0A`;
+            selectedColors.forEach(color => {
+                message += `- ${color}%0A`;
+            });
+            
+            message += `%0Aرقم الهاتف: ${phone}%0A`;
             
             if (phone2) {
                 message += `رقم هاتف إضافي: ${phone2}%0A`;
             }
             
-            message += `العنوان: ${address}%0A`;
-            message += `السعر: 599 جنيه`;
+            message += `العنوان: ${address}`;
             
             // رقم الواتساب المستهدف
             const whatsappNumber = '01060474659';
             
             // إنشاء رابط واتساب
-            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+            const whatsappUrl = `https://api.whatsapp.com/send/?phone=${whatsappNumber}&text=${message}`;
             
             // عرض رسالة النجاح
             document.getElementById('success-message').style.display = 'block';
             
             // فتح واتساب بعد تأخير بسيط
             setTimeout(() => {
-                window.open(whatsappUrl, '_blank');
-            }, 1000);
+                window.location.href = whatsappUrl;
+            }, 1500);
         });
+        
+        // إخفاء قسم العناصر المختارة في البداية
+        selectedItemsSection.style.display = 'none';
     </script>
 </body>
 </html>
