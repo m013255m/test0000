@@ -320,7 +320,7 @@
                             <div class="option" data-value="أسود">أسود</div>
                             <div class="option" data-value="أبيض">أبيض</div>
                             <div class="option" data-value="أحمر">أحمر</div>
-                            <div class="option" data-value="أزرق">أزرمي</div>
+                            <div class="option" data-value="أزرق">أزرق</div>
                             <div class="option" data-value="أخضر">أخضر</div>
                             <div class="option" data-value="رمادي">رمادي</div>
                         </div>
@@ -445,7 +445,7 @@
                 'أسود': '#000000',
                 'أبيض': '#FFFFFF',
                 'أحمر': '#FF0000',
-                'أزرمي': '#1E90FF',
+                'أزرق': '#1E90FF',
                 'أخضر': '#008000',
                 'رمادي': '#808080'
             };
@@ -475,45 +475,60 @@
             const address = document.getElementById('address').value;
             
             // إنشاء نص الرسالة
-            let message = `طلب شراء جديد:%0A%0A`;
-            message += `المنتج: تيشيرت رياضي متميز%0A`;
-            message += `السعر: 199 جنيه%0A%0A`;
+            let message = `🎯 *طلب شراء جديد*%0A%0A`;
+            message += `👕 *المنتج:* تيشيرت رياضي متميز%0A`;
+            message += `💰 *السعر:* 199 جنيه%0A%0A`;
             
-            message += `المقاسات المطلوبة:%0A`;
+            message += `📏 *المقاسات المطلوبة:*%0A`;
             selectedSizes.forEach(size => {
-                message += `- ${size}%0A`;
+                message += `   - ${size}%0A`;
             });
             
-            message += `%0Aالألوان المطلوبة:%0A`;
+            message += `%0A🎨 *الألوان المطلوبة:*%0A`;
             selectedColors.forEach(color => {
-                message += `- ${color}%0A`;
+                message += `   - ${color}%0A`;
             });
             
-            message += `%0Aرقم الهاتف: ${phone}%0A`;
+            message += `%0A📞 *رقم الهاتف:* ${phone}%0A`;
             
             if (phone2) {
-                message += `رقم هاتف إضافي: ${phone2}%0A`;
+                message += `📱 *رقم هاتف إضافي:* ${phone2}%0A`;
             }
             
-            message += `العنوان: ${address}`;
+            message += `🏠 *العنوان:* ${address}%0A%0A`;
+            message += `🕒 *وقت الطلب:* ${new Date().toLocaleString('ar-EG')}`;
             
-            // رقم الواتساب المستهدف
-            const whatsappNumber = '01060474659';
+            // رقم الواتساب المستهدف مع رمز الدولة المصري
+            const whatsappNumber = '201060474659'; // 20 هو رمز مصر
             
-            // إنشاء رابط واتساب
-            const whatsappUrl = `https://api.whatsapp.com/send/?phone=${whatsappNumber}&text=${message}`;
+            // إنشاء رابط واتساب بطريقة صحيحة
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
             
             // عرض رسالة النجاح
             document.getElementById('success-message').style.display = 'block';
             
-            // فتح واتساب بعد تأخير بسيط
+            // فتح واتساب في نافذة جديدة بعد تأخير بسيط
             setTimeout(() => {
-                window.location.href = whatsappUrl;
+                window.open(whatsappUrl, '_blank');
+                // يمكنك استخدام هذا السطر بدلاً من window.open إذا واجهت مشكلة:
+                // window.location.href = whatsappUrl;
             }, 1500);
         });
         
         // إخفاء قسم العناصر المختارة في البداية
         selectedItemsSection.style.display = 'none';
+        
+        // إضافة تحقق من صحة رقم الهاتف المصري
+        document.getElementById('phone').addEventListener('input', function(e) {
+            const phone = e.target.value;
+            // إزالة أي مسافات أو شرطات
+            const cleanPhone = phone.replace(/\s|-/g, '');
+            
+            // إذا بدأ الرقم بـ 0 نضيف 20 بدلاً منها
+            if (cleanPhone.startsWith('0')) {
+                e.target.value = cleanPhone;
+            }
+        });
     </script>
 </body>
 </html>
