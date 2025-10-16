@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>طلب المنتج | متجرنا</title>
+    <title>عطر ويسكي الفاخر | اورلا للعطور</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #FF6B35;
+            --primary: #8B4513;
             --secondary: #1A1A1A;
-            --accent: #F7931E;
+            --accent: #D2691E;
             --light: #F5F5F5;
             --text: #333333;
+            --gold: #FFD700;
         }
         
         * {
@@ -47,7 +48,7 @@
         .logo {
             font-size: 28px;
             font-weight: bold;
-            color: var(--primary);
+            color: var(--gold);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -61,6 +62,17 @@
             font-size: 16px;
             color: #aaa;
             margin-top: 5px;
+        }
+        
+        .offer-badge {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.4);
+            animation: pulse 2s infinite;
         }
         
         .product-container {
@@ -91,7 +103,7 @@
             position: absolute;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255,107,53,0.1) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(139, 69, 19, 0.1) 0%, transparent 70%);
             animation: pulse 8s infinite linear;
         }
         
@@ -102,7 +114,7 @@
         
         .product-image img {
             max-width: 100%;
-            max-height: 450px;
+            max-height: 500px;
             border-radius: 10px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
             position: relative;
@@ -139,30 +151,42 @@
             border-radius: 3px;
         }
         
-        .product-price {
-            font-size: 28px;
-            font-weight: bold;
-            color: var(--primary);
-            margin-bottom: 20px;
+        .price-container {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
+            margin-bottom: 20px;
         }
         
-        .product-price::before {
-            content: '💰';
+        .current-price {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--gold);
+        }
+        
+        .old-price {
             font-size: 24px;
+            color: #888;
+            text-decoration: line-through;
+        }
+        
+        .discount {
+            background: var(--primary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
         }
         
         .product-description {
             color: #ccc;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             line-height: 1.8;
             font-size: 18px;
         }
         
         .features {
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
         
         .features ul {
@@ -170,27 +194,77 @@
         }
         
         .features li {
-            padding: 10px 0;
+            padding: 12px 0;
             position: relative;
             padding-right: 35px;
             color: #ddd;
             font-size: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .features li:last-child {
+            border-bottom: none;
         }
         
         .features li::before {
             content: '✓';
             position: absolute;
             right: 0;
-            color: var(--primary);
+            color: var(--gold);
             font-weight: bold;
             font-size: 20px;
             width: 25px;
             height: 25px;
-            background: rgba(255, 107, 53, 0.2);
+            background: rgba(139, 69, 19, 0.2);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+        
+        .special-offer {
+            background: rgba(139, 69, 19, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(139, 69, 19, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .special-offer::before {
+            content: 'عرض خاص';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--gold);
+            color: var(--secondary);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .special-offer p {
+            margin: 10px 0;
+            color: #ddd;
+            font-size: 16px;
+        }
+        
+        .guarantee {
+            background: rgba(40, 167, 69, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(40, 167, 69, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .guarantee i {
+            color: #28a745;
+            font-size: 24px;
         }
         
         .order-section {
@@ -229,12 +303,6 @@
             gap: 10px;
         }
         
-        .form-group label i {
-            color: var(--primary);
-            width: 20px;
-            text-align: center;
-        }
-        
         .form-control {
             width: 100%;
             padding: 16px 20px 16px 50px;
@@ -250,7 +318,7 @@
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.3), inset 0 2px 5px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.3), inset 0 2px 5px rgba(0, 0, 0, 0.3);
         }
         
         .form-control::placeholder {
@@ -283,7 +351,7 @@
             align-items: center;
             justify-content: center;
             gap: 12px;
-            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.4);
             position: relative;
             overflow: hidden;
         }
@@ -305,7 +373,7 @@
         
         .order-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.6);
+            box-shadow: 0 8px 20px rgba(139, 69, 19, 0.6);
         }
         
         .order-btn:active {
@@ -345,14 +413,18 @@
                 font-size: 26px;
             }
             
-            .product-price {
-                font-size: 24px;
+            .current-price {
+                font-size: 28px;
+            }
+            
+            .old-price {
+                font-size: 20px;
             }
         }
         
         /* تأثيرات إضافية */
         .glow {
-            text-shadow: 0 0 10px rgba(255, 107, 53, 0.7);
+            text-shadow: 0 0 10px rgba(139, 69, 19, 0.7);
         }
         
         .pulse {
@@ -360,9 +432,9 @@
         }
         
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 107, 53, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 107, 53, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(139, 69, 19, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(139, 69, 19, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(139, 69, 19, 0); }
         }
         
         .floating {
@@ -382,33 +454,51 @@
             <div>
                 <div class="logo">
                     <i class="fas fa-crown"></i>
-                    متجرنا الفاخر
+                    اورلا للعطور
                 </div>
                 <div class="tagline">جودة لا تضاهى وتوصيل سريع</div>
             </div>
-            <div class="contact">
-                <i class="fas fa-phone"></i> الدعم: 01060474659
+            <div class="offer-badge">
+                🎁 اشتري 2 واحصل على الثالثة هدية
             </div>
         </header>
         
         <div class="product-container">
             <div class="product-details">
-                <h1 class="product-title">ساعة ذكية فاخرة - الطراز المميز</h1>
-                <div class="product-price">1,250 جنيه</div>
+                <h1 class="product-title">عطر ويسكي الفاخر - البرفان الفرنسي</h1>
+                
+                <div class="price-container">
+                    <div class="current-price">199 جنيه</div>
+                    <div class="old-price">350 جنيه</div>
+                    <div class="discount">وفر 43%</div>
+                </div>
                 
                 <p class="product-description">
-                    ساعة ذكية متطورة تجمع بين الأناقة والأداء العالي. مزودة بأحدث التقنيات لتلبية جميع احتياجاتك اليومية مع تصميم فاخر يناسب جميع المناسبات.
+                    عطر ويسكي الفرنسي الفاخر - أفضل العطور للرجال والنساء. عطر صيفي وشتوي يمتد ثباته على الجسم لمدة 24 ساعة. زجاجة 100 مل برائحة جذابة لا تقاوم.
                 </p>
                 
                 <div class="features">
                     <ul>
-                        <li>شاشة لمس عالية الدقة مقاس 1.8 بوصة</li>
-                        <li>مقاومة للماء حتى عمق 50 متر</li>
-                        <li>مراقبة معدل ضربات القلب والنوم</li>
-                        <li>بطارية تعمل حتى 7 أيام بشحنة واحدة</li>
-                        <li>متوافقة مع iOS و Android</li>
-                        <li>إشعارات الهاتف والتطبيقات</li>
+                        <li>ثبات 24 ساعة على الجسم</li>
+                        <li>زجاجة 100 مل عالية الجودة</li>
+                        <li>مناسب للرجال والنساء</li>
+                        <li>رائحة جذابة ومميزة</li>
+                        <li>عطر صيفي وشتوي</li>
+                        <li>برفان فرنسي أصلي</li>
                     </ul>
+                </div>
+                
+                <div class="special-offer">
+                    <p>🎁 <strong>عرض التوفير:</strong> اشتري قطعتين واحصل على الثالثة هدية</p>
+                    <p>🚚 <strong>الشحن والمعاينة مجاناً</strong></p>
+                </div>
+                
+                <div class="guarantee">
+                    <i class="fas fa-shield-alt"></i>
+                    <div>
+                        <strong>إفتح عاين وشم البرفيوم ولو معجبكش تقدر متستلمش بدون تحمل أي رسوم</strong>
+                        <p>تقدر تعاين المنتج قبل الاستلام ولو معجبش الأوردر تقدر ترجعه مع المندوب من غير تحمل أي رسوم</p>
+                    </div>
                 </div>
                 
                 <div class="order-section">
@@ -419,23 +509,17 @@
                     
                     <form id="order-form">
                         <div class="form-group">
-                            <label for="fullname">
-                                <i class="fas fa-user"></i>
-                                الأسم بالكامل
-                            </label>
+                            <label for="fullname">الأسم بالكامل</label>
                             <div class="input-wrapper">
                                 <input type="text" id="fullname" class="form-control" required placeholder="أدخل اسمك بالكامل">
                                 <div class="input-icon">
-                                    <i class="fas fa-user-circle"></i>
+                                    <i class="fas fa-user"></i>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="phone">
-                                <i class="fas fa-mobile-alt"></i>
-                                رقم الهاتف
-                            </label>
+                            <label for="phone">رقم الهاتف</label>
                             <div class="input-wrapper">
                                 <input type="tel" id="phone" class="form-control" required placeholder="أدخل رقم هاتفك">
                                 <div class="input-icon">
@@ -445,40 +529,31 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="governorate">
-                                <i class="fas fa-map-marker-alt"></i>
-                                المحافظة
-                            </label>
+                            <label for="governorate">المحافظة</label>
                             <div class="input-wrapper">
                                 <input type="text" id="governorate" class="form-control" required placeholder="أدخل المحافظة">
                                 <div class="input-icon">
-                                    <i class="fas fa-globe"></i>
+                                    <i class="fas fa-map-marker-alt"></i>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="city">
-                                <i class="fas fa-city"></i>
-                                المدينة
-                            </label>
+                            <label for="city">المدينة</label>
                             <div class="input-wrapper">
                                 <input type="text" id="city" class="form-control" required placeholder="أدخل المدينة">
                                 <div class="input-icon">
-                                    <i class="fas fa-building"></i>
+                                    <i class="fas fa-city"></i>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="address">
-                                <i class="fas fa-home"></i>
-                                اسم الشارع ورقم المنزل
-                            </label>
+                            <label for="address">اسم الشارع ورقم المنزل</label>
                             <div class="input-wrapper">
                                 <input type="text" id="address" class="form-control" required placeholder="أدخل اسم الشارع ورقم المنزل">
                                 <div class="input-icon">
-                                    <i class="fas fa-map-pin"></i>
+                                    <i class="fas fa-home"></i>
                                 </div>
                             </div>
                         </div>
@@ -497,12 +572,12 @@
             </div>
             
             <div class="product-image">
-                <img src="https://i.postimg.cc/15DxNrk0/file-00000000eb9c620a83784b74a6765531.png" alt="ساعة ذكية فاخرة" class="floating">
+                <img src="https://i.postimg.cc/15DxNrk0/file-00000000eb9c620a83784b74a6765531.png" alt="عطر ويسكي الفاخر" class="floating">
             </div>
         </div>
         
         <footer>
-            <p>© 2023 متجرنا الفاخر. جميع الحقوق محفوظة.</p>
+            <p>© 2023 اورلا للعطور. جميع الحقوق محفوظة.</p>
             <p>للاستفسارات: 01060474659 | خدمة العملاء متاحة 24/7</p>
         </footer>
     </div>
@@ -521,8 +596,8 @@
             
             // إنشاء نص الرسالة
             let message = `🎯 *طلب شراء جديد*%0A%0A`;
-            message += `🛒 *المنتج:* ساعة ذكية فاخرة - الطراز المميز%0A`;
-            message += `💰 *السعر:* 1,250 جنيه%0A%0A`;
+            message += `🛒 *المنتج:* عطر ويسكي الفاخر - البرفان الفرنسي%0A`;
+            message += `💰 *السعر:* 199 جنيه (بدلاً من 350 جنيه)%0A%0A`;
             
             message += `👤 *الاسم بالكامل:* ${fullname}%0A`;
             message += `📞 *رقم الهاتف:* ${phone}%0A`;
