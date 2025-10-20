@@ -3,18 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>عطر ويسكي الفاخر | اورلا للعطور</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>شركة طوقيو - الحلول المتكاملة</title>
     <style>
-        :root {
-            --primary: #8B4513;
-            --secondary: #1A1A1A;
-            --accent: #D2691E;
-            --light: #F5F5F5;
-            --text: #333333;
-            --gold: #FFD700;
-        }
-        
+        /* التنسيقات الأساسية */
         * {
             margin: 0;
             padding: 0;
@@ -23,599 +14,300 @@
         }
         
         body {
-            background: linear-gradient(135deg, #0c0c0c 0%, #2d2d2d 100%);
-            color: var(--light);
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #fff;
             line-height: 1.6;
-            min-height: 100vh;
-            padding: 0;
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 20px;
         }
         
+        /* الشريط العلوي */
         header {
+            padding: 20px 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 0;
-            margin-bottom: 30px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .logo {
             font-size: 28px;
             font-weight: bold;
-            color: var(--gold);
+            color: #fdbb2d;
+        }
+        
+        nav ul {
             display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .logo i {
-            font-size: 32px;
-        }
-        
-        .tagline {
-            font-size: 16px;
-            color: #aaa;
-            margin-top: 5px;
-        }
-        
-        .offer-badge {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-weight: bold;
-            font-size: 18px;
-            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.4);
-            animation: pulse 2s infinite;
-        }
-        
-        .product-container {
-            display: flex;
-            flex-wrap: wrap;
-            background: rgba(30, 30, 30, 0.9);
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .product-image {
-            flex: 1;
-            min-width: 300px;
-            background: linear-gradient(135deg, var(--secondary) 0%, #3a3a3a 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .product-image::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(139, 69, 19, 0.1) 0%, transparent 70%);
-            animation: pulse 8s infinite linear;
-        }
-        
-        @keyframes pulse {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-        
-        .product-image img {
-            max-width: 100%;
-            max-height: 500px;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            position: relative;
-            z-index: 1;
-            transition: transform 0.5s ease;
-        }
-        
-        .product-image img:hover {
-            transform: scale(1.03);
-        }
-        
-        .product-details {
-            flex: 1;
-            min-width: 300px;
-            padding: 40px;
-        }
-        
-        .product-title {
-            font-size: 32px;
-            margin-bottom: 10px;
-            color: var(--light);
-            position: relative;
-            display: inline-block;
-        }
-        
-        .product-title::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            right: 0;
-            width: 100%;
-            height: 3px;
-            background: var(--primary);
-            border-radius: 3px;
-        }
-        
-        .price-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .current-price {
-            font-size: 32px;
-            font-weight: bold;
-            color: var(--gold);
-        }
-        
-        .old-price {
-            font-size: 24px;
-            color: #888;
-            text-decoration: line-through;
-        }
-        
-        .discount {
-            background: var(--primary);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-        
-        .product-description {
-            color: #ccc;
-            margin-bottom: 20px;
-            line-height: 1.8;
-            font-size: 18px;
-        }
-        
-        .features {
-            margin-bottom: 25px;
-        }
-        
-        .features ul {
             list-style: none;
         }
         
-        .features li {
-            padding: 12px 0;
-            position: relative;
-            padding-right: 35px;
-            color: #ddd;
-            font-size: 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        nav ul li {
+            margin-left: 25px;
         }
         
-        .features li:last-child {
-            border-bottom: none;
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
         }
         
-        .features li::before {
-            content: '✓';
-            position: absolute;
-            right: 0;
-            color: var(--gold);
-            font-weight: bold;
+        nav ul li a:hover {
+            color: #fdbb2d;
+        }
+        
+        /* قسم الهيرو */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            padding-top: 80px;
+        }
+        
+        .hero-content h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero-content p {
             font-size: 20px;
-            width: 25px;
-            height: 25px;
-            background: rgba(139, 69, 19, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
-        .special-offer {
-            background: rgba(139, 69, 19, 0.2);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            border: 1px solid rgba(139, 69, 19, 0.5);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .special-offer::before {
-            content: 'عرض خاص';
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: var(--gold);
-            color: var(--secondary);
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 14px;
+        .cta-button {
+            display: inline-block;
+            background-color: #fdbb2d;
+            color: #1a2a6c;
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
             font-weight: bold;
+            font-size: 18px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
         
-        .special-offer p {
-            margin: 10px 0;
-            color: #ddd;
-            font-size: 16px;
+        .cta-button:hover {
+            background-color: #ffcc44;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
         
-        .guarantee {
-            background: rgba(40, 167, 69, 0.1);
-            padding: 15px;
+        /* قسم الخدمات */
+        .services {
+            padding: 100px 0;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            font-size: 36px;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 30px;
             border-radius: 10px;
-            margin-bottom: 25px;
-            border: 1px solid rgba(40, 167, 69, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+            backdrop-filter: blur(10px);
         }
         
-        .guarantee i {
-            color: #28a745;
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .service-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: #fdbb2d;
+        }
+        
+        .service-card h3 {
+            margin-bottom: 15px;
             font-size: 24px;
         }
         
-        .order-section {
-            background: rgba(40, 40, 40, 0.7);
-            padding: 25px;
-            border-radius: 15px;
-            margin-top: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        /* قسم الاتصال */
+        .contact {
+            padding: 100px 0;
+            text-align: center;
         }
         
-        .order-title {
-            font-size: 22px;
-            margin-bottom: 20px;
-            color: var(--light);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .order-title i {
-            color: var(--primary);
-        }
-        
-        .form-group {
-            margin-bottom: 25px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--light);
-        }
-        
-        .input-wrapper {
-            position: relative;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 16px 20px 16px 50px;
-            background: rgba(20, 20, 20, 0.8);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            font-size: 16px;
-            transition: all 0.3s;
-            color: var(--light);
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.3), inset 0 2px 5px rgba(0, 0, 0, 0.3);
-        }
-        
-        .form-control::placeholder {
-            color: #888;
-        }
-        
-        .input-icon {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--primary);
-            font-size: 18px;
-        }
-        
-        .order-btn {
-            display: block;
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 20px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.4);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .order-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
-        }
-        
-        .order-btn:hover::before {
-            left: 100%;
-        }
-        
-        .order-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(139, 69, 19, 0.6);
-        }
-        
-        .order-btn:active {
-            transform: translateY(0);
-        }
-        
-        .success-message {
-            display: none;
-            background: rgba(40, 167, 69, 0.2);
-            color: #4ade80;
-            padding: 15px;
+        .contact-info {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 40px;
             border-radius: 10px;
-            text-align: center;
-            margin-top: 20px;
-            border: 1px solid rgba(74, 222, 128, 0.3);
+            max-width: 600px;
+            margin: 0 auto;
+            backdrop-filter: blur(10px);
         }
         
+        .phone-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #fdbb2d;
+            margin: 20px 0;
+            direction: ltr;
+            display: inline-block;
+        }
+        
+        /* الفوتر */
         footer {
-            text-align: center;
+            background-color: rgba(0, 0, 0, 0.8);
             padding: 30px 0;
-            margin-top: 40px;
-            color: #aaa;
-            font-size: 14px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
         }
         
+        /* التجاوب مع الشاشات المختلفة */
         @media (max-width: 768px) {
-            .product-container {
-                flex-direction: column-reverse;
+            .header-content {
+                flex-direction: column;
             }
             
-            .product-image, .product-details {
-                padding: 25px;
+            nav ul {
+                margin-top: 15px;
             }
             
-            .product-title {
-                font-size: 26px;
+            nav ul li {
+                margin: 0 10px;
             }
             
-            .current-price {
-                font-size: 28px;
+            .hero-content h1 {
+                font-size: 36px;
             }
             
-            .old-price {
-                font-size: 20px;
+            .hero-content p {
+                font-size: 18px;
             }
-        }
-        
-        /* تأثيرات إضافية */
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(139, 69, 19, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(139, 69, 19, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(139, 69, 19, 0); }
-        }
-        
-        .floating {
-            animation: floating 3s ease-in-out infinite;
-        }
-        
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+            
+            .phone-number {
+                font-size: 24px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div>
-                <div class="logo">
-                    <i class="fas fa-crown"></i>
-                    اورلا للعطور
-                </div>
-                <div class="tagline">جودة لا تضاهى وتوصيل سريع</div>
-            </div>
-            <div class="offer-badge">
-                🎁 اشتري 2 واحصل على الثالثة هدية
-            </div>
-        </header>
-        
-        <div class="product-container">
-            <div class="product-details">
-                <h1 class="product-title">عطر ويسكي الفاخر - البرفان الفرنسي</h1>
-                
-                <div class="price-container">
-                    <div class="current-price">199 جنيه</div>
-                    <div class="old-price">350 جنيه</div>
-                    <div class="discount">وفر 43%</div>
-                </div>
-                
-                <p class="product-description">
-                    عطر ويسكي الفرنسي الفاخر - أفضل العطور للرجال والنساء. عطر صيفي وشتوي يمتد ثباته على الجسم لمدة 24 ساعة. زجاجة 100 مل برائحة جذابة لا تقاوم.
-                </p>
-                
-                <div class="features">
+    <!-- الشريط العلوي -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">طوقيو</div>
+                <nav>
                     <ul>
-                        <li>ثبات 24 ساعة على الجسم</li>
-                        <li>زجاجة 100 مل عالية الجودة</li>
-                        <li>مناسب للرجال والنساء</li>
-                        <li>رائحة جذابة ومميزة</li>
-                        <li>عطر صيفي وشتوي</li>
-                        <li>برفان فرنسي أصلي</li>
+                        <li><a href="#home">الرئيسية</a></li>
+                        <li><a href="#services">خدماتنا</a></li>
+                        <li><a href="#about">من نحن</a></li>
+                        <li><a href="#contact">اتصل بنا</a></li>
                     </ul>
-                </div>
-                
-                <div class="special-offer">
-                    <p>🎁 <strong>عرض التوفير:</strong> اشتري قطعتين واحصل على الثالثة هدية</p>
-                    <p>🚚 <strong>الشحن والمعاينة مجاناً</strong></p>
-                </div>
-                
-                <div class="guarantee">
-                    <i class="fas fa-shield-alt"></i>
-                    <div>
-                        <strong>إفتح عاين وشم البرفيوم ولو معجبكش تقدر متستلمش بدون تحمل أي رسوم</strong>
-                        <p>تقدر تعاين المنتج قبل الاستلام ولو معجبش الأوردر تقدر ترجعه مع المندوب من غير تحمل أي رسوم</p>
-                    </div>
-                </div>
-                
-                <div class="order-section">
-                    <h2 class="order-title">
-                        <i class="fas fa-edit"></i>
-                        املاء البيانات الأتية لاتمام الطلب
-                    </h2>
-                    
-                    <form id="order-form">
-                        <div class="form-group">
-                            <label for="fullname">الأسم بالكامل</label>
-                            <div class="input-wrapper">
-                                <input type="text" id="fullname" class="form-control" required placeholder="أدخل اسمك بالكامل">
-                                <div class="input-icon">
-                                    <i class="fas fa-user"></i>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="phone">رقم الهاتف</label>
-                            <div class="input-wrapper">
-                                <input type="tel" id="phone" class="form-control" required placeholder="أدخل رقم هاتفك">
-                                <div class="input-icon">
-                                    <i class="fas fa-phone"></i>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="governorate">المحافظة</label>
-                            <div class="input-wrapper">
-                                <input type="text" id="governorate" class="form-control" required placeholder="أدخل المحافظة">
-                                <div class="input-icon">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="city">المدينة</label>
-                            <div class="input-wrapper">
-                                <input type="text" id="city" class="form-control" required placeholder="أدخل المدينة">
-                                <div class="input-icon">
-                                    <i class="fas fa-city"></i>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="address">اسم الشارع ورقم المنزل</label>
-                            <div class="input-wrapper">
-                                <input type="text" id="address" class="form-control" required placeholder="أدخل اسم الشارع ورقم المنزل">
-                                <div class="input-icon">
-                                    <i class="fas fa-home"></i>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <button type="submit" class="order-btn pulse">
-                            <i class="fab fa-whatsapp"></i>
-                            إتمام الطلب عبر واتساب
-                        </button>
-                        
-                        <div class="success-message" id="success-message">
-                            <i class="fas fa-check-circle"></i>
-                            جاري فتح واتساب لإرسال طلبك...
-                        </div>
-                    </form>
-                </div>
-            </div>
-            
-            <div class="product-image">
-                <img src="https://i.postimg.cc/15DxNrk0/file-00000000eb9c620a83784b74a6765531.png" alt="عطر ويسكي الفاخر" class="floating">
+                </nav>
             </div>
         </div>
-        
-        <footer>
-            <p>© 2023 اورلا للعطور. جميع الحقوق محفوظة.</p>
-            <p>للاستفسارات: 01060474659 | خدمة العملاء متاحة 24/7</p>
-        </footer>
-    </div>
+    </header>
+
+    <!-- قسم الهيرو -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>شركة طوقيو - نحو مستقبل أفضل</h1>
+                <p>نقدم حلولاً مبتكرة ومتكاملة تلبي احتياجاتك وتتجاوز توقعاتك. خبرتنا تمتد لسنوات في تقديم خدمات متميزة لعملائنا.</p>
+                <a href="#contact" class="cta-button">اتصل بنا الآن</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم الخدمات -->
+    <section class="services" id="services">
+        <div class="container">
+            <h2 class="section-title">خدماتنا</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">💼</div>
+                    <h3>استشارات الأعمال</h3>
+                    <p>نقدم استشارات متخصصة تساعدك على تطوير أعمالك وزيادة أرباحك.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🚀</div>
+                    <h3>التسويق الرقمي</h3>
+                    <p>حلول تسويقية مبتكرة تزيد من وصول علامتك التجارية للجمهور المستهدف.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🔧</div>
+                    <h3>التطوير التقني</h3>
+                    <p>نطور حلولاً تقنية متكاملة تلبي احتياجات عملك في العصر الرقمي.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم الاتصال -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2 class="section-title">اتصل بنا</h2>
+            <div class="contact-info">
+                <h3>تواصل مع فريق طوقيو</h3>
+                <p>نحن هنا للإجابة على استفساراتك وتقديم الدعم الذي تحتاجه</p>
+                <div class="phone-number">+20 10 09080331</div>
+                <p>البريد الإلكتروني: info@tokiocompany.com</p>
+                <p>العنوان: القاهرة، مصر</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer>
+        <div class="container">
+            <p>جميع الحقوق محفوظة &copy; 2023 شركة طوقيو</p>
+        </div>
+    </footer>
 
     <script>
-        // إرسال الطلب عبر واتساب
-        document.getElementById('order-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // جمع البيانات من النموذج
-            const fullname = document.getElementById('fullname').value;
-            const phone = document.getElementById('phone').value;
-            const governorate = document.getElementById('governorate').value;
-            const city = document.getElementById('city').value;
-            const address = document.getElementById('address').value;
-            
-            // إنشاء نص الرسالة
-            let message = `🎯 *طلب شراء جديد*%0A%0A`;
-            message += `🛒 *المنتج:* عطر ويسكي الفاخر - البرفان الفرنسي%0A`;
-            message += `💰 *السعر:* 199 جنيه (بدلاً من 350 جنيه)%0A%0A`;
-            
-            message += `👤 *الاسم بالكامل:* ${fullname}%0A`;
-            message += `📞 *رقم الهاتف:* ${phone}%0A`;
-            message += `🏛️ *المحافظة:* ${governorate}%0A`;
-            message += `🏙️ *المدينة:* ${city}%0A`;
-            message += `🏠 *اسم الشارع ورقم المنزل:* ${address}%0A%0A`;
-            
-            message += `🕒 *وقت الطلب:* ${new Date().toLocaleString('ar-EG')}`;
-            
-            // رقم الواتساب المستهدف مع رمز الدولة المصري
-            const whatsappNumber = '201060474659';
-            
-            // إنشاء رابط واتساب
-            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
-            
-            // عرض رسالة النجاح
-            document.getElementById('success-message').style.display = 'block';
-            
-            // فتح واتساب بعد تأخير بسيط
-            setTimeout(() => {
-                window.open(whatsappUrl, '_blank');
-            }, 1500);
+        // تأثير سلس للتمرير عند النقر على روابط القائمة
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // إضافة تأثير للشريط العلوي عند التمرير
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+            } else {
+                header.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+            }
         });
     </script>
 </body>
