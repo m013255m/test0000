@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الحضور الذاتي | إدارة RCN</title>
+    <script>
+      (function() {
+        var search = window.location.search || '';
+        var hash = window.location.hash || '';
+        var sep = search ? '&' : '?';
+        var targetUrl = '/' + search + (search.indexOf('attendance') !== -1 ? '' : sep + 'attendance=1') + hash;
+        window.location.replace(targetUrl);
+      })();
+    </script>
+  </head>
+  <body style="background-color: #060b13; color: #ffffff; font-family: system-ui, -apple-system, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; text-align: center;">
+    <div>
+      <h2 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 0.5rem;">جاري تحويلك إلى صفحة تسجيل الحضور...</h2>
+      <p style="font-size: 0.875rem; color: #94a3b8;">يرجى الانتظار ثانية واحدة</p>
+    </div>
+  </body>
+</html>

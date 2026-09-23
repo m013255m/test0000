@@ -1,0 +1,10 @@
+{
+  "name": "PulseSync SaaS - Member, Attendance & Financial Platform",
+  "description": "Complete SaaS platform for gyms, academies, clubs, and training centers to manage members, QR attendance, subscriptions, expenses, and business finances.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
