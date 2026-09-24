@@ -1,0 +1,110 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+/* Crisp Pure White Theme */
+html:not(.dark) {
+  background-color: #f8fafc;
+}
+
+/* Mobile-first touch improvements */
+button, a, input, select {
+  touch-action: manipulation;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.35);
+  border-radius: 9999px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(107, 114, 128, 0.4);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.65);
+}
+
+/* Scanner laser animation */
+@keyframes scan-laser {
+  0% { top: 0%; opacity: 0.8; }
+  50% { top: 96%; opacity: 1; }
+  100% { top: 0%; opacity: 0.8; }
+}
+
+.animate-scan-laser {
+  animation: scan-laser 2.2s ease-in-out infinite;
+}
+
+
+/* Desktop layout + stable login field colors */
+html, body, #root {
+  min-height: 100%;
+}
+
+body {
+  min-width: 320px;
+}
+
+/* Prevent browser autofill from replacing the login field background/text colors. */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: #0f172a !important;
+  caret-color: #0f172a;
+  -webkit-box-shadow: 0 0 0 1000px #f8fafc inset !important;
+  box-shadow: 0 0 0 1000px #f8fafc inset !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+.dark input:-webkit-autofill:active,
+.dark textarea:-webkit-autofill,
+.dark textarea:-webkit-autofill:hover,
+.dark textarea:-webkit-autofill:focus,
+.dark select:-webkit-autofill,
+.dark select:-webkit-autofill:hover,
+.dark select:-webkit-autofill:focus {
+  -webkit-text-fill-color: #f8fafc !important;
+  caret-color: #f8fafc;
+  -webkit-box-shadow: 0 0 0 1000px #060c18 inset !important;
+  box-shadow: 0 0 0 1000px #060c18 inset !important;
+}
+
+/* Give the authenticated desktop workspace the space expected on large monitors. */
+@media (min-width: 1024px) {
+  .desktop-main-content {
+    min-width: 0;
+    padding: 1.5rem 2rem 2rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .desktop-main-content {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
